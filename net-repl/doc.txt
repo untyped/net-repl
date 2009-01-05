@@ -1,0 +1,78 @@
+_net-repl_ : A Network Read-Eval-Print Loop
+===========================================
+
+By the Untyped Dudes
+    Noel Welsh   (noel at untyped dot com)
+    Dr D Gurnell (daveg at untyped dot com)
+
+Keywords: _net-repl_, _repl_, _read-eval-print_,
+	  _read-eval-print loop_
+
+
+Introduction
+============
+
+The net-repl library provides a REPL that reads from and
+writes to a TCP network port, instead of the usual console
+IO.  This is useful if you wish to interact with a long
+running program, such as a web-server, that does not have a
+console.
+
+
+Usage
+=====
+
+Somewhere in your program add the following lines:
+
+  (require (planet "net-repl.ss" ("untyped" "net-repl.plt" 1)))
+  (run-net-repl)
+
+You will now have a REPL running on port 9876 (see the API
+documentation for how you can change the port).  Just telnet
+to this port from the same machine running the REPL and type
+away.  Type
+
+  (close)
+
+to close your connection when you've finished.
+
+
+Security & Other Warnings
+-------------------------
+
+The net REPL only allows access from the localhost
+(127.0.0.1).  However anyone with shell access to your
+machine can access the REPL.  Therefore don't run the net
+REPL on a public machine.
+
+If you run
+
+  (exit)
+
+you'll quit the entire MzScheme process.  This can be
+useful, but can also unexpectedly bring down your server.
+Be careful!
+
+
+net-repl API
+============
+
+> (with-net-repl-port [port-k])
+with-net-repl-port : (parameter-of natural)
+
+A natural number giving the port the net REPL should listen
+to.  Defaults to 9876.
+
+
+> (with-net-repl-timeout [timeout])
+with-net-repl-timeout : (parameter-of (U natural #f))
+
+The time, in seconds, that a connection thread is allowed to
+run before it is terminated, or #f indicating connections
+can run forever.  Defaults to #f.
+
+> (run-net-repl)
+run-net-repl : () -> thread-descriptor
+
+Runs the net REPL server is a new thread.  Returns the
+thread-descriptor of the net REPL thread.
