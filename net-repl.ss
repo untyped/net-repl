@@ -64,6 +64,6 @@
 
 (provide/contract
  [net-repl-port    (parameter/c natural-number/c)]
- [net-repl-timeout (parameter/c (or/c natural-number/c false/c))]
- [run-net-repl     (-> void?)])
+ [net-repl-timeout (parameter/c (or/c natural-number/c #f))]
+ [run-net-repl     (-> thread?)])
 
